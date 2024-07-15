@@ -1,16 +1,14 @@
-/*************************************
-
+/*******************************
 
 [rewrite_local]
-^https:\/\/accounts\.agenda\.com\/users\/\.+\/license url script-response-body https://raw.githubusercontent.com/akdhhwiixbsi/linnnli/main/Ag.js
+^https:\/\/accounts\.agenda\.com\/users\/\.*\/license url script-response-body Ag.js
 [mitm] 
 hostname = accounts.agenda.com
 
 
 
-*************************************/
 
-
+*******************************/
 
 var objc = JSON.parse($response.body);
 
@@ -27,5 +25,4 @@ var objc = JSON.parse($response.body);
   "unlockExpiry": 721550422,
   "universalPurchaseAvailable": false
 }
-
 $done({body : JSON.stringify(objc)});
