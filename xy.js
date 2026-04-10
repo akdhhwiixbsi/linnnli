@@ -1,55 +1,56 @@
-/*******************************
+/*
 
 [rewrite_local]
-^https:\/\/api-chn\.rthdo\.com\/api\/rest\/u\/vipVerifyReceipt url script-response-body xy.js
-[mitm] 
-hostname = api-chn.rthdo.com
+^https:\/\/api\.yingyutingting\.com \/1\.1\/\.+ url script-response-body url script-response-body xiaoying.js
+^https?://buy\.itunes\.apple\.com/verifyReceipt url script-request-response xiaoying.js
+*/
+// xiaoying.js - 小鹦看看 破解脚本
+// 功能：修改 api.yingyutingting.com 响应 + Mock App Store 收据验证
 
+let url = $request.url;
 
-
-
-
-*******************************/
-
-var objc = JSON.parse($response.body);
-
-    objc = {
-  "autoRenewStatus": 0,
-  "originalTransactionId": "440001467929084",
-  "duidDgest": "DIfwagdm",
-  "hasIntroOfferProds": [],
-  "iosDeviceProductVo": {
-    "newVipMonthly": 3,
-    "premiumVipWeekly": 3,
-    "premiumPlatinumQuarterly": 3,
-    "premiumGoldMonthly": 3,
-    "premiumPlatinumMonthly": 3,
-    "newVipYearly": 3,
-    "premiumVipYearly": 3,
-    "newVipWeekly": 3,
-    "nonOrganicVipMonthly": 3,
-    "premiumPlatinumHalfYearly": 3,
-    "nonOrganicVipWeekly": 3,
-    "premiumGoldYearly": 3,
-    "nonOrganicVipYearly": 3,
-    "premiumPlatinumYearly": 2
-  },
-  "platform": 2,
-  "endTime": 5686761108000,
-  "systemDate": 1693433652983,
-  "productList": [
-    {
-      "isRenew": true,
-      "vipType": "premium_platinum_yearly"
+// 场景1：响应体修改 (由 script-response-body 触发)
+if (typeof $response !== 'undefined') {
+    if (url.includes('api.yingyutingting.com') && /\/1\.1\//.test(url)) {
+        let body = $response.body;
+        if (body) {
+            // 注入 Pro IAP 信息
+            body = body.replace(/"clientType":"ios"/g, 
+                '"clientType":"ios", "pollykannProIAP":"vip.quarterly.pollykann\\n[2024-07-22 22:28:28-->2088-03-09 02:01:47]","pollykannIAPProPurchasedDate":{"__type":"Date","iso":"2024-07-22T14:28:28.000Z"}');
+            // 固定 updatedAt
+            body = body.replace(/"updatedAt":".*?"/g, 
+                '"updatedAt":"2025-11-14T16:55:49.784Z"');
+            // 固定 createdAt
+            body = body.replace(/"createdAt":".*?"/g, 
+                '"createdAt":"2025-11-13T17:11:29.089Z"');
+            // 修改 UserProfile
+            body = body.replace(/"UserProfile":"[^}]+"/g, 
+                '"UserProfile":"{\\"ModifyDate\\":\\"2025-11-14 18:30:09\\",\\"Nickname\\":\\"考虑\\""');
+            $done({ body });
+        } else {
+            $done({});
+        }
+    } else {
+        $done({});
     }
-  ],
-  "hasFreedTrialProds": [
-    "premium_platinum_yearly"
-  ],
-  "isTrialPeriod": true,
-  "transactionId": "440001467929084",
-  "startTime": 1686501908000,
-  "vipType": "premium_platinum_yearly",
-  "sign": "ea6f4dc65a57bac86d474699b0563e7f"
 }
-$done({body : JSON.stringify(objc)});
+// 场景2：请求 Mock (由 script-request-response 触发)
+else {
+    if (url.includes('buy.itunes.apple.com') && url.includes('/verifyReceipt')) {
+        let mockFile = $file.read('08997709.txt');
+        if (mockFile) {
+            $done({
+                response: {
+                    status: 200,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: mockFile
+                }
+            });
+        } else {
+            // 文件不存在则继续原始请求
+            $done({});
+        }
+    } else {
+        $done({});
+    }
+}
