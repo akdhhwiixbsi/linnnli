@@ -49,5 +49,18 @@ let body = {
       }
     }
   }
+};
+// 处理响应头：删除 x-revenuecat-etag（不区分大小写）
+let headers = $response.headers || {};
+for (let key in headers) {
+  if (key.toLowerCase() === 'x-revenuecat-etag') {
+    delete headers[key];
+  }
 }
-$done({ body: JSON.stringify(body) });
+
+// 强制返回 200 OK，并带上新的 body 和清理过的 headers
+$done({
+  status: 200,                     // ← 这里将状态码强行设为 200
+  headers: headers,
+  body: JSON.stringify(body)
+});
