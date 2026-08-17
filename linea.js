@@ -1,7 +1,7 @@
 /*
 
 [rewrite_local]
-^https:\/\/proxy\.linearity\.io\/v1\/subscribers\/\.+ url script-response-body https://raw.githubusercontent.com/akdhhwiixbsi/linnnli/refs/heads/main/linea.js
+^https:\/\/proxy\.linearity\.io\/v1\/\.+ url script-response-body https://raw.githubusercontent.com/akdhhwiixbsi/linnnli/refs/heads/main/linea.js
 [mitm] 
 hostname = proxy.linearity.io
 
