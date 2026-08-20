@@ -6,7 +6,13 @@
 hostname = cdnapi.qianmaschool.com
 
 
-
 ***/
 
-var __encode ='jsjiami.com',_a={}, _0xb483=["\x5F\x64\x65\x63\x6F\x64\x65","\x68\x74\x74\x70\x3A\x2F\x2F\x77\x77\x77\x2E\x73\x6F\x6A\x73\x6F\x6E\x2E\x63\x6F\x6D\x2F\x6A\x61\x76\x61\x73\x63\x72\x69\x70\x74\x6F\x62\x66\x75\x73\x63\x61\x74\x6F\x72\x2E\x68\x74\x6D\x6C"];(function(_0xd642x1){_0xd642x1[_0xb483[0]]= _0xb483[1]})(_a);
+var body = $response.body;
+
+body = body.replace(/"hasVip"\s*:\s*false/g, '"hasVip":true');
+body = body.replace(/"flipFree"\s*:\s*false/g, '"flipFree":true');
+body = body.replace(/"isFlipVip"\s*:\s*false/g, '"isFlipVip":true');
+body = body.replace(/"isTrial"\s*:\s*false/g, '"isTrial":true');
+body = body.replace(/"accessible"\s*:\s*false/g, '"accessible":true');
+$done({body: body});
