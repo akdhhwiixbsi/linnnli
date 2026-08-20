@@ -1,7 +1,7 @@
 /***
 
 [rewrite_local]
-^https:\/\/cdnapi\.qianmaschool\.com\/\.+ url script-response-body qq.js
+^https:\/\/cdnapi\.qianmaschool\.com\/\.+ url script-response-body https://raw.githubusercontent.com/akdhhwiixbsi/linnnli/refs/heads/main/qq.js
 [mitm] 
 hostname = cdnapi.qianmaschool.com
 
