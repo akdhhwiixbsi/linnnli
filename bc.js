@@ -9,5 +9,6 @@ hostname = cap.baicizhan.com
 var body = $response.body;
 
 body = body.replace(/"canAccess"\s*:\s*\w+/g, '"canAccess":true');
+body = body.replace(/"unlock"\s*:\s*\w+/g, '"unlock":true');
 
 $done({body: body});
