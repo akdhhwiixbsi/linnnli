@@ -8,9 +8,19 @@ hostname = cap.baicizhan.com
 **/
 
 
-var body = $response.body;
+let body = $response.body;
 
-body = body.replace(/"canAccess"\s*:\s*false/g, '"canAccess":true');
-body = body.replace(/"unlock"\s*:\s*\w+/g, '"unlock":true');
+if (!body) {
+  $done({});
+} else {
+  try {
+    body = body
+      .replace(/"canAccess"\s*:\s*(?:true|false|null|-?\d+(?:\.\d+)?)/g, '"canAccess":true')
+      .replace(/"unlock"\s*:\s*(?:true|false|null|-?\d+(?:\.\d+)?)/g, '"unlock":true');
 
-$done({body: body});
+    $done({ body: body });
+  } catch (e) {
+    console.log("bc.js error: " + e);
+    $done({});
+  }
+}
