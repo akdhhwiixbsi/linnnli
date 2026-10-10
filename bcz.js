@@ -1,6 +1,6 @@
 /*
 [rewrite_local]
-^https:\/\/cap\.baicizhan\.com\/\/api\/v1\/entitlement\/user\/query url script-response-body https://raw.githubusercontent.com/akdhhwiixbsi/linnnli/refs/heads/main/bcz.js
+^https:\/\/cap\.baicizhan\.com\/api\/v1\/entitlement\/user\/query url script-response-body https://raw.githubusercontent.com/akdhhwiixbsi/linnnli/refs/heads/main/bcz.js
 [mitm] 
 hostname = cap.baicizhan.com
 */
