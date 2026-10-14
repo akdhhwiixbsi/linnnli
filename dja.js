@@ -1,0 +1,33 @@
+/**
+[rewrite_local]
+
+^https?:\/\/api\.revenuecat\.com\/.+\/(receipts$|subscribers\/?(.*?)*$) url script-response-body https://raw.githubusercontent.com/akdhhwiixbsi/linnnli/refs/heads/main/dja.js
+
+^https?:\/\/api\.revenuecat\.com\/.+\/(receipts$|subscribers\/?(.*?)*$) url script-request-header https://raw.githubusercontent.com/akdhhwiixbsi/linnnli/refs/heads/main/dja.js
+
+[mitm] 
+
+hostname = api.revenuecat.com
+
+*******************************/
+
+const py996 = {};
+const py997 = JSON.parse(typeof $response != "undefined" && $response.body || null);
+
+const name = "pro";
+const appid = "com.algoriddim.djay_iphone_free.pro.yearly";
+
+  
+if (typeof $response == "undefined") {
+  delete $request.headers["x-revenuecat-etag"];
+  delete $request.headers["X-RevenueCat-ETag"];
+
+  py996.headers = $request.headers;
+} else if (py997 && py997.subscriber) {
+  data = {
+    "expires_date": "9999-09-09T09:09:09Z",
+    "original_purchase_date": "2023-02-23T02:33:33Z",
+    "purchase_date": "2023-02-23T02:33:33Z",
+    "ownership_type": "PURCHASED",
+    "store": "app_store"
+  };
