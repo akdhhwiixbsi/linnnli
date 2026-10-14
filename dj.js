@@ -52,7 +52,7 @@ let fakeBody = {
 };
 
 if (typeof $response === 'undefined') {
-  // 请求阶段：删除请求头 X-RevenueCat-ETag
+  // 请求阶段：删除请求头 X-RevenueCat-ETag，避免服务器回 304
   let reqHeaders = $request.headers || {};
   for (let key in reqHeaders) {
     if (key.toLowerCase() === 'x-revenuecat-etag') {
@@ -61,21 +61,27 @@ if (typeof $response === 'undefined') {
   }
   $done({ headers: reqHeaders });
 } else {
-  // 响应阶段：删除响应头 x-revenuecat-etag，修改状态码为 200，并替换 body
+  // 响应阶段：无论服务器回 200 / 304 / 其他，统一改成 200 并写入假 body
   let respHeaders = {};
   let oldRespHeaders = $response.headers || {};
 
   for (let key in oldRespHeaders) {
     let lowerKey = key.toLowerCase();
-
-    // 删除 x-revenuecat-etag，顺便删掉 content-length，避免 body 变化后长度不一致
-    if (lowerKey !== 'x-revenuecat-etag' && lowerKey !== 'content-length') {
+    // 删掉 etag 相关头，以及会影响 body 解析的 content-length
+    if (
+      lowerKey !== 'x-revenuecat-etag' &&
+      lowerKey !== 'etag' &&
+      lowerKey !== 'content-length'
+    ) {
       respHeaders[key] = oldRespHeaders[key];
     }
   }
 
+  // 补上正确的 content-type，避免客户端按 304 空 body 处理
+  respHeaders['Content-Type'] = 'application/json';
+
   $done({
-    status: "HTTP/1.1 200 OK",
+    status: "HTTP/1.1 200 OK",   // 关键：把 304 改写成 200
     headers: respHeaders,
     body: JSON.stringify(fakeBody)
   });
