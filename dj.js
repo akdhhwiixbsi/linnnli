@@ -1,7 +1,7 @@
 /*
 [rewrite_local]
-^https:\/\/api\.revenuecat\.com\/v1\/\.+ url script-request-header https://raw.githubusercontent.com/akdhhwiixbsi/linnnli/refs/heads/main/dj.js
-^https:\/\/api\.revenuecat\.com\/v1\/\.+ url script-response-body https://raw.githubusercontent.com/akdhhwiixbsi/linnnli/refs/heads/main/dj.js
+^https:\/\/api\.revenuecat\.com\/v1\/.+ url script-request-header https://raw.githubusercontent.com/akdhhwiixbsi/linnnli/refs/heads/main/dj.js
+^https:\/\/api\.revenuecat\.com\/v1\/.+ url script-response-body https://raw.githubusercontent.com/akdhhwiixbsi/linnnli/refs/heads/main/dj.js
 
 [mitm]
 hostname = api.revenuecat.com
